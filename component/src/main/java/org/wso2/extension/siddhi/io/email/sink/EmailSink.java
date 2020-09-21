@@ -507,23 +507,18 @@ public class EmailSink extends Sink {
      */
     @Override
     public void connect() throws ConnectionUnavailableException {
-        try {
-            EmailConnectorFactory emailConnectorFactory = new EmailConnectorFactoryImpl();
-            EmailClientConnectionPoolManager.initializeConnectionPool(emailConnectorFactory, initProperties);
-        } catch (EmailConnectorException e) {
-            if (e.getCause() instanceof MailConnectException) {
-                if (e.getCause().getCause() instanceof ConnectException) {
+//        try {
+//            EmailConnectorFactory emailConnectorFactory = new EmailConnectorFactoryImpl();
+//            EmailClientConnectionPoolManager.initializeConnectionPool(emailConnectorFactory, initProperties);
+            for(int a = 1; a < 50; a++){
+                if( a%2 == 1){
                     throw new ConnectionUnavailableException("Error is encountered while connecting to the smtp"
-                            + " server." +  e.getMessage(), e.getCause());
+                            + " server.&&&&&&&&&&&&&&&&&&&&");
                 } else {
-                    throw new RuntimeException("Error is encountered while connecting to the smtp server." +
-                            e.getMessage(), e.getCause());
+                    throw new RuntimeException("Yyyyyyyyyyyyy");
                 }
-            } else {
-                throw new RuntimeException("Error is encountered while connecting to the"
-                        + " the smtp server." + e.getMessage(), e);
             }
-        }
+//        } 
     }
 
     /**
@@ -578,38 +573,12 @@ public class EmailSink extends Sink {
         emailBaseMessage.setHeaders(combinedEmailProperties);
         GenericKeyedObjectPool objectPool = EmailClientConnectionPoolManager.getConnectionPool();
         if (objectPool != null) {
-            EmailClientConnector connection = null;
-            try {
-                connection = (EmailClientConnector)
-                        objectPool.borrowObject(EmailConstants.EMAIL_CLIENT_CONNECTION_POOL_ID);
-                if (connection != null) {
-                    connection.send(emailBaseMessage);
-                }
-            } catch (Exception e) {
-                //calling super class logs the exception and retry
-                if (e.getCause() instanceof MailConnectException) {
-                    if (e.getCause().getCause() instanceof ConnectException) {
-                        throw new ConnectionUnavailableException("Error is encountered while connecting the smtp"
-                                + " server by the email ClientConnector.", e);
-                    } else {
-                        throw new RuntimeException("Error is encountered while sending the message by the email"
-                                + " ClientConnector with properties: " + combinedEmailProperties.toString(), e);
-                    }
-                } else if (e.getCause() instanceof SMTPSendFailedException) {
-                    throw new ConnectionUnavailableException("Error encountered while connecting " +
-                            "to the mail server by the email client connector.", e);
+            for(int a = 1; a < 50; a++){
+                if( a%2 == 1){
+                    throw new ConnectionUnavailableException("Error is encountered while connecting to the smtp"
+                            + " server.&&&&&&&&&&&&&&&&&&&&");
                 } else {
-                    throw new RuntimeException("Error is encountered while sending the message by the email"
-                            + " ClientConnector with properties: " + combinedEmailProperties.toString(), e);
-                }
-            } finally {
-                if (connection != null) {
-                    try {
-                        objectPool.returnObject(EmailConstants.EMAIL_CLIENT_CONNECTION_POOL_ID, connection);
-                    } catch (Exception e) {
-                        log.error("Error in returning the email client connection object to the pool. " +
-                                e.getMessage(), e);
-                    }
+                    throw new RuntimeException("Yyyyyyyyyyyyy");
                 }
             }
         } else {
