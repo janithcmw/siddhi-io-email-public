@@ -39,13 +39,11 @@ public class EmailClientConnectionPoolFactory extends BaseKeyedPoolableObjectFac
     }
 
     @Override
-    public Object makeObject(Object key) throws EmailConnectorException {
-        synchronized (this) {
-            if (!emailClientConnector.isConnected()) {
-                emailClientConnector.connect();
-            }
-            return emailClientConnector;
+    public synchronized Object makeObject(Object key) throws EmailConnectorException {
+        if (!emailClientConnector.isConnected()) {
+            emailClientConnector.connect();
         }
+        return emailClientConnector;
     }
 
     @Override
